@@ -676,8 +676,8 @@
                   </tbody>
                 </table>
               </div>
-              <div class="results-graph-placeholder" style="${model.graph ? 'background: none; border: none;' : ''}">
-                ${model.graph ? `<img src="assets/${model.graph}" alt="${model.name} results graph" style="max-width: 100%; height: auto; border-radius: 8px;">` : `<!-- Placeholder for ${model.name} graph -->`}
+              <div class="results-graph-placeholder ${model.graph ? 'has-image' : ''}">
+                ${model.graph ? `<img src="assets/${model.graph}" alt="${model.name} results graph" style="max-width: 100%; height: auto; border-radius: 8px;">` : ''}
               </div>
             </div>
           </div>
