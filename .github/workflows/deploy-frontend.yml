@@ -8,6 +8,12 @@ on:
       - 'frontend_webpage/**'
       - '.github/workflows/deploy-frontend.yml'
 
+# Allow the action to write to the repository
+permissions:
+  contents: write
+  pages: write
+  id-token: write
+
 jobs:
   deploy:
     runs-on: ubuntu-latest
