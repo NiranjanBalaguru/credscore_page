@@ -416,8 +416,8 @@
           images from the dataset pass through the Perturbation Engine, which produces
           clean and adversarially modified variants. These are fed into the VLM Model
           for caption generation. Prediction outputs are forwarded to the Metric
-          Computation stage, which computes $S_{clean}$, $S_{ood}$, and
-          $S_{adv}$. The Credibility Score module aggregates these into a
+          Computation stage, which computes S<sub>clean</sub>, S<sub>ood</sub>, and
+          S<sub>adv</sub>. The Credibility Score module aggregates these into a
           composite CS value, which is finally consumed by the Risk Output &amp;
           Visualization module.
         </p>
@@ -441,8 +441,8 @@
           <li>The <strong>Evaluation Engine</strong> instructs the Dataset Loader to load the target dataset.</li>
           <li>Image–question pairs are dispatched to the <strong>Vision-Language Model</strong>.</li>
           <li>Generated predictions are returned to the <strong>Prediction Collector</strong>.</li>
-          <li>Predictions are forwarded to the <strong>Metric Engine</strong>, which computes $S_{clean}$,
-            $S_{ood}$, and $S_{adv}$.</li>
+          <li>Predictions are forwarded to the <strong>Metric Engine</strong>, which computes S<sub>clean</sub>,
+            S<sub>ood</sub>, and S<sub>adv</sub>.</li>
           <li>Accuracy scores flow to the <strong>Credibility Engine</strong>, which computes the composite CS.</li>
           <li>The <strong>Risk Engine</strong> computes the deployment risk classification.</li>
           <li>Final results and graphs are displayed back to the User via the <strong>Output System</strong>.</li>
@@ -465,20 +465,20 @@
           Each axis represents a specific operational condition that a robust Vision-Language Model must satisfy.
         </p>
 
-        <h3 class="subsection-heading">1. Clean Semantic Fidelity ($S_{clean}$)</h3>
+        <h3 class="subsection-heading">1. Clean Semantic Fidelity (S<sub>clean</sub>)</h3>
         <p>
           Measures the model's accuracy on high-quality, in-distribution data. It is computed as a weighted ensemble of
           reference-based metrics (CIDEr, METEOR, BERTScore) compared against ground-truth annotations.
         </p>
 
-        <h3 class="subsection-heading">2. OOD Robustness ($S_{ood}$)</h3>
+        <h3 class="subsection-heading">2. OOD Robustness (S<sub>ood</sub>)</h3>
         <p>
           Evaluates the stability of model outputs under distributional shifts. We apply natural perturbations (noise,
           blur, contrast changes) and measure the semantic consistency of the generated captions relative to the clean
           baseline.
         </p>
 
-        <h3 class="subsection-heading">3. Adversarial Resilience ($S_{adv}$)</h3>
+        <h3 class="subsection-heading">3. Adversarial Resilience (S<sub>adv</sub>)</h3>
         <p>
           Quantifies the model's resistance to targeted adversarial attacks. It measures the performance retention when
           the visual encoder is subjected to imperceptible perturbations designed to induce hallucination.
@@ -555,7 +555,7 @@
           </li>
           <li>
             <strong>Metric Engine:</strong>
-            The Unified Credibility Score (CS) is computed using the <strong>Harmonic Mean</strong> formula of three variables: $S_{clean}$, $S_{ood}$, and $S_{adv}$.
+            The Unified Credibility Score (CS) is computed using the <strong>Harmonic Mean</strong> formula of three variables: S<sub>clean</sub>, S<sub>ood</sub>, and S<sub>adv</sub>.
             The risk is then derived as:
             <div class="formula-block">
               \[ Risk = 1 - CS \]
@@ -574,7 +574,7 @@
       <h2 class="section-heading">Experimental Results</h2>
       <div class="prose" style="margin-bottom: 2rem;">
         <p>
-          We evaluate the performance of <strong>ViLT, Blip-2, and Blip</strong> across multiple levels of evaluation axes. The results below show the progression of $S_{clean}$, $S_{ood}$, $S_{adv}$, CS, and Risk metrics.
+          We evaluate the performance of <strong>ViLT, Blip-2, and Blip</strong> across multiple levels of evaluation axes. The results below show the progression of S<sub>clean</sub>, S<sub>ood</sub>, S<sub>adv</sub>, CS, and Risk metrics.
         </p>
       </div>
 
@@ -645,29 +645,44 @@
         const response = await fetch('assets/data.json');
         const data = await response.json();
 
-        // Populate Experimental Results Table
-        const resultsBody = document.getElementById('results-table-body');
-        resultsBody.innerHTML = data.experimental_results.map(row => `
-          <tr class="${row.highlight ? 'highlight-row' : ''}">
-            <td>${row.model}</td>
-            <td>${row.s_clean}</td>
-            <td>${row.s_ood}</td>
-            <td>${row.s_adv}</td>
-            <td>${row.credscore}</td>
-          </tr>
+        const container = document.getElementById('results-dynamic-container');
+        container.innerHTML = data.models.map(model => `
+          <div class="results-section">
+            <h3 class="subsection-heading">${model.name}</h3>
+            <div class="results-container">
+              <div class="results-table-wrapper">
+                <table class="results-table">
+                  <thead>
+                    <tr>
+                      <th>Level</th>
+                      <th>S<sub>clean</sub></th>
+                      <th>S<sub>ood</sub></th>
+                      <th>S<sub>adv</sub></th>
+                      <th>CS</th>
+                      <th>Risk</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    ${model.results.map(row => `
+                      <tr>
+                        <td>${row.level}</td>
+                        <td>${row.s_clean.toFixed(4)}</td>
+                        <td>${row.s_ood.toFixed(4)}</td>
+                        <td>${row.s_adv.toFixed(4)}</td>
+                        <td>${row.cs.toFixed(4)}</td>
+                        <td>${row.risk.toFixed(4)}</td>
+                      </tr>
+                    `).join('')}
+                  </tbody>
+                </table>
+              </div>
+              <div class="results-graph-placeholder">
+                <!-- Placeholder for ${model.name} graph -->
+              </div>
+            </div>
+          </div>
         `).join('');
 
-        // Populate Model Comparison Table
-        const comparisonBody = document.getElementById('comparison-table-body');
-        comparisonBody.innerHTML = data.model_comparison.map(row => `
-          <tr>
-            <td>${row.metric}</td>
-            <td>${row.blip_base}</td>
-            <td>${row.instructblip}</td>
-          </tr>
-        `).join('');
-
-        // Re-run MathJax to typeset newly added formulas if any
         if (window.MathJax) {
           window.MathJax.typesetPromise();
         }
