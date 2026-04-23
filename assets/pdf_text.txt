@@ -1,0 +1,193 @@
+
+=== Page 1 ===
+Images on this page: 0
+Architecture Document 
+Batch No: B473 
+Title: Unified Metric for Hallucination Risk Evaluation in Vision–
+Language Models 
+ 
+ 
+ 
+1. System Overview: 
+The system is designed to evaluate hallucination behaviour in Vison-Language Models (VLMs) by 
+computing a unified credibility metric across clean, out-of-distribution(OOD), and adversarial 
+conditions. The pipeline operates sequentially: 
+ Dataset → Perturbation → Model → Semantic Scoring → Metric → Credibility →Risk 
+The architecture follows a Monolithic analytical design with internally modular components, 
+enabling: 
+1. Controlled experimental evaluation 
+2. Reproducibility 
+3. Extensibility to new models and datasets 
+ 
+2. Components: 
+Component 
+Function 
+Evaluation Engine 
+Orchestrates the entire pipeline, manages data-
+wise and attack-wise evaluation 
+Dataset Loader 
+Loads datasets such as COCO(clean), 
+Flickr/Vizwiz/Textcaps(OOD) 
+Perturbation Engine 
+Generates adversarial variants of inputs 
+Model Interface Layer 
+Provides unified access to multiple VLMs 
+Prediction Collector 
+Stores model responses for evaluation 
+Semantic Scoring Engine 
+Computes grounding, consistency, and 
+semantic correctness 
+Metric Engine 
+Computes S_clean, S_ood, S_adv 
+Credibility Engine 
+Computes Credibility Score (CS) using 
+Harmonic Mean 
+Risk Engine 
+Computes Deployment risk 
+Visualization Engine 
+Generates graphs and analysis 
+
+  Rendered page as: arch_page1.png
+
+=== Page 2 ===
+Images on this page: 3
+ 
+ 
+ 
+3. High Level Architecture Diagram (Core) 
+  
+4. Data Flow Diagram (DFD Level 0) 
+ 
+ 
+5. Sequence Diagram (Execution Flow) 
+
+  Extracted: arch_page2_img1.png (915x616)
+  Extracted: arch_page2_img2.png (1336x570)
+  Extracted: arch_page2_img3.png (1200x467)
+  Rendered page as: arch_page2.png
+
+=== Page 3 ===
+Images on this page: 0
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+7. Deployment Architecture: 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+8. Database/ Data Storage Design: 
+Evaluation Results: 
+• Model name  
+ 
+ 
+Storage Medium: Text/Json/In-Memory 
+• S_clean 
+• S_ood 
+• S_adv 
+• CS 
+• Risk 
+• Timestamp 
+User 
+Google Colab Environment 
+Python Runtime 
+VLM Models 
+Metric Engine 
+Result storage/ Visualization 
+
+  Rendered page as: arch_page3.png
+
+=== Page 4 ===
+Images on this page: 0
+ 
+9. Data Exchange Contract: 
+a. Input Format: 
+ 
+ 
+ 
+b.   Output Format: 
+{  
+ 
+ 
+ 
+ 
+ 
+{ 
+image: path, 
+ 
+ 
+ 
+ 
+model:name, 
+question: string, 
+ 
+ 
+ 
+ 
+S_clean: float, 
+label: yes/no 
+ 
+ 
+ 
+ 
+S_ood: float, 
+}  
+ 
+ 
+ 
+ 
+ 
+S_adv: float, 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+CS: float, 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+Risk: float 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+} 
+
+  Rendered page as: arch_page4.png
