@@ -2,6 +2,7 @@
   "models": [
     {
       "name": "ViLT",
+      "graph": "vilt_graph.png",
       "results": [
         {"level": 1, "s_clean": 0.6442, "s_ood": 0.1707, "s_adv": 0.6550, "cs": 0.3357, "risk": 0.6643},
         {"level": 2, "s_clean": 0.6442, "s_ood": 0.1707, "s_adv": 0.6517, "cs": 0.3354, "risk": 0.6646},
@@ -12,6 +13,7 @@
     },
     {
       "name": "Blip 2",
+      "graph": "blip2_graph.png",
       "results": [
         {"level": 1, "s_clean": 0.1641, "s_ood": 0.1329, "s_adv": 0.1690, "cs": 0.1536, "risk": 0.8464},
         {"level": 2, "s_clean": 0.1641, "s_ood": 0.1329, "s_adv": 0.1692, "cs": 0.1536, "risk": 0.8464},
@@ -20,6 +22,7 @@
     },
     {
       "name": "Blip",
+      "graph": "blip_graph.png",
       "results": [
         {"level": 1, "s_clean": 0.1641, "s_ood": 0.1329, "s_adv": 0.1690, "cs": 0.1536, "risk": 0.8464},
         {"level": 2, "s_clean": 0.1641, "s_ood": 0.1329, "s_adv": 0.1692, "cs": 0.1536, "risk": 0.8464},
