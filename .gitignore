@@ -1,0 +1,13 @@
+# Ignore everything
+*
+
+# Allow the frontend directory
+!frontend_webpage/
+!frontend_webpage/**
+
+# Allow the GitHub Actions (necessary for deployment)
+!.github/
+!.github/**
+
+# Allow the .gitignore file
+!.gitignore

@@ -1,0 +1,50 @@
+{
+  "experimental_results": [
+    {
+      "model": "BLIP-Base",
+      "s_clean": 0.72,
+      "s_ood": 0.58,
+      "s_adv": 0.45,
+      "credscore": 0.56,
+      "highlight": false
+    },
+    {
+      "model": "InstructBLIP-7B",
+      "s_clean": 0.81,
+      "s_ood": 0.74,
+      "s_adv": 0.62,
+      "credscore": 0.71,
+      "highlight": true
+    },
+    {
+      "model": "mPLUG-Owl2",
+      "s_clean": 0.85,
+      "s_ood": 0.78,
+      "s_adv": 0.72,
+      "credscore": 0.78,
+      "highlight": false
+    }
+  ],
+  "model_comparison": [
+    {
+      "metric": "Clean Accuracy",
+      "blip_base": "Moderate",
+      "instructblip": "<strong>High</strong>"
+    },
+    {
+      "metric": "Hallucination Tendency",
+      "blip_base": "High",
+      "instructblip": "<strong>Low</strong>"
+    },
+    {
+      "metric": "Inference Speed",
+      "blip_base": "<strong>18.2 ms / img</strong>",
+      "instructblip": "42.5 ms / img"
+    },
+    {
+      "metric": "Credibility Axis Balance",
+      "blip_base": "Skewed",
+      "instructblip": "<strong>Balanced</strong>"
+    }
+  ]
+}

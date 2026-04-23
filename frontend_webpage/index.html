@@ -1,0 +1,701 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Unified Metric for Hallucination Risk Evaluation in Vision-Language Models</title>
+  <meta name="description" content="A unified credibility and risk scoring framework for evaluating hallucination in Vision-Language Models under out-of-distribution and adversarial conditions." />
+  <link rel="stylesheet" href="style.css" />
+  <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+  <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+</head>
+<body>
+
+  <!-- ===================== NAVBAR ===================== -->
+  <nav class="navbar" id="navbar">
+    <div class="navbar__inner">
+      <span class="navbar__brand">GPU-CREDScore</span>
+      <ul class="navbar__links">
+        <li><a href="#abstract">Abstract</a></li>
+        <li><a href="#problem">Problem</a></li>
+        <li><a href="#pipeline">Pipeline</a></li>
+        <li><a href="#components">Components</a></li>
+        <li><a href="#architecture">Architecture</a></li>
+        <li><a href="#metric">Metric</a></li>
+        <li><a href="#results">Results</a></li>
+        <li><a href="#comparison">Comparison</a></li>
+        <li><a href="#conclusion">Conclusion</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <main class="container">
+
+    <!-- ===================== HERO ===================== -->
+    <section class="hero" id="hero">
+      <span class="hero__venue">Research Paper 2026</span>
+      <h1 class="hero__title">
+        Unified Metric for Hallucination Risk<br />
+        Evaluation in Vision-Language Models
+      </h1>
+      <p class="hero__subtitle">
+        A structured evaluation framework that quantifies hallucination risk
+        in VLM outputs through semantic scoring, credibility estimation, and
+        multi-axis robustness analysis.
+      </p>
+    </section>
+
+    <!-- ===================== AUTHORS ===================== -->
+    <div class="authors" id="authors">
+      <ul class="authors__list">
+        <li><a href="#">Author One</a><sup>1</sup></li>
+        <li><a href="#">Author Two</a><sup>1</sup></li>
+        <li><a href="#">Author Three</a><sup>2</sup></li>
+        <li><a href="#">Author Four</a><sup>1,2</sup></li>
+      </ul>
+      <p class="authors__affiliation">
+        <sup>1</sup>&thinsp;University of Example &emsp;
+        <sup>2</sup>&thinsp;Research Lab
+      </p>
+
+      <!-- Action buttons -->
+      <div class="buttons-row">
+        <a class="btn" href="#" id="btn-paper">
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M19.5 14.25v-2.625a3.375 3.375 0 0 0-3.375-3.375h-1.5A1.125 1.125 0 0 1 13.5 7.125v-1.5a3.375 3.375 0 0 0-3.375-3.375H8.25m2.25 0H5.625c-.621 0-1.125.504-1.125 1.125v17.25c0 .621.504 1.125 1.125 1.125h12.75c.621 0 1.125-.504 1.125-1.125V11.25a9 9 0 0 0-9-9Z"/></svg>
+          Paper
+        </a>
+        <a class="btn" href="#" id="btn-code">
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M17.25 6.75 22.5 12l-5.25 5.25m-10.5 0L1.5 12l5.25-5.25m7.5-3-4.5 16.5"/></svg>
+          Code
+        </a>
+        <a class="btn" href="#" id="btn-dataset">
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M20.25 6.375c0 2.278-3.694 4.125-8.25 4.125S3.75 8.653 3.75 6.375m16.5 0c0-2.278-3.694-4.125-8.25-4.125S3.75 4.097 3.75 6.375m16.5 0v11.25c0 2.278-3.694 4.125-8.25 4.125s-8.25-1.847-8.25-4.125V6.375m16.5 0v3.75c0 2.278-3.694 4.125-8.25 4.125s-8.25-1.847-8.25-4.125v-3.75"/></svg>
+          Dataset
+        </a>
+      </div>
+    </div>
+
+    <!-- ===================== ABSTRACT ===================== -->
+    <section id="abstract">
+      <h2 class="section-heading">Abstract</h2>
+      <div class="prose">
+        <p>
+          Vision-Language Models (VLMs) have shown remarkable performance in tasks spanning
+          image captioning, visual question answering, and multimodal reasoning. However,
+          their deployment in safety-critical domains demands rigorous credibility
+          assessment. We present <strong>GPU-CREDScore</strong>, a unified framework that
+          evaluates the trustworthiness of VLM outputs across three critical dimensions:
+          <em>semantic fidelity</em>, <em>distributional robustness</em>, and
+          <em>adversarial resilience</em>.
+        </p>
+        <p>
+          Our approach introduces a multi-axis scoring pipeline that combines
+          reference-based caption evaluation metrics with novel out-of-distribution (OOD)
+          detection probes and adversarial perturbation tests. We benchmark four
+          state-of-the-art VLMs — including LLaVA-1.5, InstructBLIP, mPLUG-Owl2, and
+          Phi-3-Vision — across COCO, TextCaps, and a curated adversarial test suite.
+          Experimental results demonstrate that GPU-CREDScore provides a reliable,
+          interpretable credibility signal that correlates strongly with downstream task
+          accuracy and human judgement.
+        </p>
+      </div>
+    </section>
+
+    <!-- ===================== PROBLEM STATEMENT ===================== -->
+    <section id="problem">
+      <h2 class="section-heading">Problem Statement</h2>
+      <div class="prose">
+        <p>
+          Vision-Language Models (VLMs) are increasingly deployed in applications that
+          require factual grounding — medical report generation, autonomous navigation,
+          document understanding, and accessibility tools. Yet these models routinely
+          produce outputs that are linguistically fluent but factually ungrounded, a
+          failure mode termed <em>hallucination</em>.
+        </p>
+        <p>
+          Hallucination in VLMs manifests in several forms:
+        </p>
+        <ul>
+          <li>
+            <strong>Object hallucination</strong> — The model describes entities that
+            are absent from the input image (e.g., referencing a person in an empty
+            room).
+          </li>
+          <li>
+            <strong>Attribute hallucination</strong> — Correct objects are described
+            with incorrect properties such as color, size, spatial relation, or state.
+          </li>
+          <li>
+            <strong>Relational hallucination</strong> — The model fabricates
+            interactions or spatial relationships between objects that do not hold in
+            the visual scene.
+          </li>
+          <li>
+            <strong>Contextual hallucination</strong> — Outputs incorporate plausible
+            but unverifiable world knowledge that is not grounded in the provided image.
+          </li>
+        </ul>
+        <p>
+          Existing evaluation practice is insufficient for several reasons:
+        </p>
+        <ul>
+          <li>
+            Standard caption metrics (CIDEr, METEOR, BLEU) measure n-gram overlap with
+            reference sentences but do not detect semantic fabrication.
+          </li>
+          <li>
+            Embedding-based metrics (BERTScore, CLIPScore) capture distributional
+            similarity but lack interpretability and are insensitive to fine-grained
+            factual errors.
+          </li>
+          <li>
+            No existing metric jointly addresses hallucination detection, robustness
+            under distribution shift, and adversarial resilience within a single,
+            actionable score.
+          </li>
+        </ul>
+        <p>
+          This work addresses the gap by proposing a unified evaluation framework that
+          systematically quantifies hallucination risk across multiple axes and produces
+          a single, interpretable credibility score suitable for deployment-stage
+          decision-making.
+        </p>
+      </div>
+    </section>
+
+    <!-- ===================== PIPELINE ===================== -->
+    <section id="pipeline">
+      <h2 class="section-heading">Evaluation Pipeline</h2>
+      <div class="prose">
+        <p>
+          The framework operates as a sequential seven-stage pipeline. Each stage
+          transforms or annotates the data flowing through the system, culminating in a
+          per-sample risk classification.
+        </p>
+      </div>
+
+      <!-- Pipeline Flow Diagram -->
+      <div class="pipeline-flow" id="pipeline-flow">
+        <div class="pipeline-step">
+          <div class="pipeline-step__number">1</div>
+          <div class="pipeline-step__label">Dataset</div>
+          <div class="pipeline-step__desc">Image–caption pairs with ground-truth annotations</div>
+        </div>
+        <div class="pipeline-arrow" aria-hidden="true">→</div>
+        <div class="pipeline-step">
+          <div class="pipeline-step__number">2</div>
+          <div class="pipeline-step__label">Perturbation</div>
+          <div class="pipeline-step__desc">OOD shifts and adversarial transforms applied to inputs</div>
+        </div>
+        <div class="pipeline-arrow" aria-hidden="true">→</div>
+        <div class="pipeline-step">
+          <div class="pipeline-step__number">3</div>
+          <div class="pipeline-step__label">Model</div>
+          <div class="pipeline-step__desc">VLM inference on clean and perturbed inputs</div>
+        </div>
+        <div class="pipeline-arrow" aria-hidden="true">→</div>
+        <div class="pipeline-step">
+          <div class="pipeline-step__number">4</div>
+          <div class="pipeline-step__label">Semantic Scoring</div>
+          <div class="pipeline-step__desc">Reference-based and embedding-based caption evaluation</div>
+        </div>
+        <div class="pipeline-arrow" aria-hidden="true">→</div>
+        <div class="pipeline-step">
+          <div class="pipeline-step__number">5</div>
+          <div class="pipeline-step__label">Metric</div>
+          <div class="pipeline-step__desc">Aggregated multi-axis quality scores</div>
+        </div>
+        <div class="pipeline-arrow" aria-hidden="true">→</div>
+        <div class="pipeline-step">
+          <div class="pipeline-step__number">6</div>
+          <div class="pipeline-step__label">Credibility</div>
+          <div class="pipeline-step__desc">Calibrated trustworthiness probability in [0,&thinsp;1]</div>
+        </div>
+        <div class="pipeline-arrow" aria-hidden="true">→</div>
+        <div class="pipeline-step">
+          <div class="pipeline-step__number">7</div>
+          <div class="pipeline-step__label">Risk</div>
+          <div class="pipeline-step__desc">Final hallucination risk classification</div>
+        </div>
+      </div>
+
+      <div class="prose" style="margin-top:1.5rem;">
+        <p>
+          Each stage is modular and independently replaceable. The pipeline accepts any
+          VLM that exposes a text-generation interface and any image–caption dataset
+          with reference annotations.
+        </p>
+      </div>
+    </section>
+
+    <!-- ===================== COMPONENTS ===================== -->
+    <section id="components">
+      <h2 class="section-heading">System Components</h2>
+      <div class="prose">
+        <p>
+          The framework is decomposed into eight self-contained engines. Each component
+          encapsulates a specific responsibility within the evaluation pipeline.
+        </p>
+      </div>
+
+      <div class="components-grid" id="components-grid">
+
+        <!-- 1. Evaluation Engine -->
+        <div class="component-card">
+          <h3 class="component-card__title">Evaluation Engine</h3>
+          <p>
+            The top-level orchestrator that sequences the entire pipeline. It manages
+            configuration, coordinates data flow between components, and aggregates
+            per-sample outputs into a final evaluation report.
+          </p>
+          <ul>
+            <li>Reads experiment configuration (model, dataset, perturbation set).</li>
+            <li>Dispatches work to downstream engines in dependency order.</li>
+            <li>Collects and serializes all intermediate and final scores.</li>
+          </ul>
+        </div>
+
+        <!-- 2. Dataset Loader -->
+        <div class="component-card">
+          <h3 class="component-card__title">Dataset Loader</h3>
+          <p>
+            Provides a uniform interface for loading image–caption datasets regardless
+            of source format. Currently supports COCO Captions, TextCaps, and custom
+            JSON annotation schemas.
+          </p>
+          <ul>
+            <li>Handles image decoding, resizing, and normalization.</li>
+            <li>Pairs each image with its set of reference captions.</li>
+            <li>Supports configurable train/validation/test splits and subset sampling.</li>
+          </ul>
+        </div>
+
+        <!-- 3. Perturbation Engine -->
+        <div class="component-card">
+          <h3 class="component-card__title">Perturbation Engine</h3>
+          <p>
+            Applies controlled transformations to input images to evaluate model
+            robustness under distribution shift and adversarial attack.
+          </p>
+          <ul>
+            <li>OOD perturbations: Gaussian noise, contrast jitter, color shift, JPEG
+              compression, domain style transfer.</li>
+            <li>Adversarial perturbations: PGD, FGSM, and AutoAttack targeting the
+              visual encoder.</li>
+            <li>Returns both clean and perturbed copies for paired evaluation.</li>
+          </ul>
+        </div>
+
+        <!-- 4. Model Interface -->
+        <div class="component-card">
+          <h3 class="component-card__title">Model Interface</h3>
+          <p>
+            A model-agnostic abstraction layer that wraps VLM inference. Any model
+            that accepts an image tensor and returns a text string can be evaluated
+            through this interface.
+          </p>
+          <ul>
+            <li>Supports LLaVA-1.5, InstructBLIP, mPLUG-Owl2, and Phi-3-Vision.</li>
+            <li>Manages tokenization, prompt formatting, and generation parameters.</li>
+            <li>Provides batch inference with configurable GPU memory management.</li>
+          </ul>
+        </div>
+
+        <!-- 5. Semantic Scoring -->
+        <div class="component-card">
+          <h3 class="component-card__title">Semantic Scoring</h3>
+          <p>
+            Computes similarity between generated captions and ground-truth references
+            using both surface-level and embedding-based metrics.
+          </p>
+          <ul>
+            <li>Reference-based: CIDEr, METEOR, BLEU-4, ROUGE-L.</li>
+            <li>Embedding-based: BERTScore (F1), CLIPScore.</li>
+            <li>Outputs a per-sample score vector for downstream aggregation.</li>
+          </ul>
+        </div>
+
+        <!-- 6. Metric Engine -->
+        <div class="component-card">
+          <h3 class="component-card__title">Metric Engine</h3>
+          <p>
+            Aggregates raw scores from the Semantic Scoring component into
+            interpretable, multi-axis quality indicators.
+          </p>
+          <ul>
+            <li>Computes weighted ensembles of metric families (n-gram, embedding).</li>
+            <li>Normalizes scores to a common [0,&thinsp;1] scale via min-max or quantile
+              calibration.</li>
+            <li>Separates clean-input scores from perturbed-input scores to quantify
+              degradation.</li>
+          </ul>
+        </div>
+
+        <!-- 7. Credibility Engine -->
+        <div class="component-card">
+          <h3 class="component-card__title">Credibility Engine</h3>
+          <p>
+            Maps aggregated metric outputs to a single credibility probability using a
+            learned calibration function.
+          </p>
+          <ul>
+            <li>Combines semantic fidelity, OOD robustness, and adversarial resilience
+              axes via weighted harmonic mean.</li>
+            <li>Produces the final <strong>CREDScore</strong> ∈ [0,&thinsp;1].</li>
+            <li>Supports threshold tuning for application-specific operating points.</li>
+          </ul>
+        </div>
+
+        <!-- 8. Risk Engine -->
+        <div class="component-card">
+          <h3 class="component-card__title">Risk Engine</h3>
+          <p>
+            Translates the continuous CREDScore into a discrete hallucination risk
+            classification for deployment-stage decision-making.
+          </p>
+          <ul>
+            <li>Risk tiers: <strong>Low</strong> (CREDScore ≥ 0.75),
+              <strong>Medium</strong> (0.50–0.74), <strong>High</strong> (&lt; 0.50).</li>
+            <li>Generates per-sample risk reports with contributing factor breakdown.</li>
+            <li>Provides model-level summary statistics for comparative benchmarking.</li>
+          </ul>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ===================== SYSTEM ARCHITECTURE ===================== -->
+    <section id="architecture">
+      <h2 class="section-heading">System Architecture</h2>
+      <div class="prose">
+        <p>
+          The system follows a monolithic analytical design with internally modular
+          components. This architecture enables controlled experimental evaluation,
+          reproducibility, and extensibility to new models and datasets. The three
+          diagrams below illustrate the system at increasing levels of detail.
+        </p>
+      </div>
+
+      <!-- 3.1 High-Level Architecture Diagram -->
+      <h3 class="subsection-heading">High-Level Architecture</h3>
+      <div class="prose">
+        <p>
+          The core architecture comprises two vertical processing chains. The left
+          chain handles data ingestion and model inference: the Dataset Layer feeds
+          into the Perturbation Engine, which forwards clean and perturbed inputs to
+          the VLM Model Interface Layer, whose outputs are collected by the Prediction
+          Collector. The right chain handles scoring and risk assessment: the Metric
+          Computation Engine receives predictions, computes axis-specific scores, and
+          passes them to the Credibility Score Generator and Risk Assessment Module,
+          culminating in the Visualization &amp; Analysis Layer.
+        </p>
+      </div>
+      <figure class="figure figure--arch" id="fig-arch-highlevel">
+        <img src="assets/arch_page2_img1.png" alt="High-level architecture diagram showing the two processing chains: data ingestion and model inference on the left, scoring and risk assessment on the right." />
+        <figcaption><strong>Figure 2.</strong> High-level architecture diagram — core component topology and data dependencies.</figcaption>
+      </figure>
+
+      <!-- 3.2 Data Flow Diagram -->
+      <h3 class="subsection-heading">Data Flow Diagram (DFD Level 0)</h3>
+      <div class="prose">
+        <p>
+          The Level-0 DFD traces the end-to-end data flow through the system. Input
+          images from the dataset pass through the Perturbation Engine, which produces
+          clean and adversarially modified variants. These are fed into the VLM Model
+          for caption generation. Prediction outputs are forwarded to the Metric
+          Computation stage, which computes S<sub>clean</sub>, S<sub>ood</sub>, and
+          S<sub>adv</sub>. The Credibility Score module aggregates these into a
+          composite CS value, which is finally consumed by the Risk Output &amp;
+          Visualization module.
+        </p>
+      </div>
+      <figure class="figure figure--arch" id="fig-arch-dataflow">
+        <img src="assets/arch_page2_img2.png" alt="Data flow diagram showing the sequential processing from Image Dataset through Perturbation Engine, VLM Model, Prediction Output, Metric Computation, Credibility Score, to Risk Output and Visualization." />
+        <figcaption><strong>Figure 3.</strong> Data Flow Diagram (Level 0) — end-to-end data transformation pipeline.</figcaption>
+      </figure>
+
+      <!-- 3.3 Sequence Diagram -->
+      <h3 class="subsection-heading">Execution Sequence</h3>
+      <div class="prose">
+        <p>
+          The sequence diagram details the temporal ordering of inter-component
+          communication during a single evaluation run:
+        </p>
+        <ol>
+          <li>The <strong>User</strong> initiates an evaluation request.</li>
+          <li>The <strong>Evaluation Engine</strong> instructs the Dataset Loader to load the target dataset.</li>
+          <li>Image–question pairs are dispatched to the <strong>Vision-Language Model</strong>.</li>
+          <li>Generated predictions are returned to the <strong>Prediction Collector</strong>.</li>
+          <li>Predictions are forwarded to the <strong>Metric Engine</strong>, which computes S<sub>clean</sub>, S<sub>ood</sub>, and S<sub>adv</sub>.</li>
+          <li>Accuracy scores flow to the <strong>Credibility Engine</strong>, which computes the composite CS.</li>
+          <li>The <strong>Risk Engine</strong> computes the deployment risk classification.</li>
+          <li>Final results and graphs are displayed back to the User via the <strong>Output System</strong>.</li>
+        </ol>
+      </div>
+      <figure class="figure figure--arch-light" id="fig-arch-sequence">
+        <img src="assets/arch_page2_img3.png" alt="UML sequence diagram showing the temporal execution flow across User, Evaluation Engine, Dataset Loader, Vision-Language Model, Prediction Collector, Metric Engine, Credibility Engine, Risk Engine, and Output System." />
+        <figcaption><strong>Figure 4.</strong> Execution sequence diagram — inter-component message flow during evaluation.</figcaption>
+      </figure>
+    </section>
+
+    <!-- ===================== CREDITSCORE METRIC ===================== -->
+    <section id="metric">
+      <h2 class="section-heading">CredScore Metric</h2>
+      <div class="prose">
+        <p>
+          The CredScore framework quantifies model reliability by aggregating performance across three fundamental axes. Each axis represents a specific operational condition that a robust Vision-Language Model must satisfy.
+        </p>
+
+        <h3 class="subsection-heading">1. Clean Semantic Fidelity ($S_{clean}$)</h3>
+        <p>
+          Measures the model's accuracy on high-quality, in-distribution data. It is computed as a weighted ensemble of reference-based metrics (CIDEr, METEOR, BERTScore) compared against ground-truth annotations.
+        </p>
+
+        <h3 class="subsection-heading">2. OOD Robustness ($S_{ood}$)</h3>
+        <p>
+          Evaluates the stability of model outputs under distributional shifts. We apply natural perturbations (noise, blur, contrast changes) and measure the semantic consistency of the generated captions relative to the clean baseline.
+        </p>
+
+        <h3 class="subsection-heading">3. Adversarial Resilience ($S_{adv}$)</h3>
+        <p>
+          Quantifies the model's resistance to targeted adversarial attacks. It measures the performance retention when the visual encoder is subjected to imperceptible perturbations designed to induce hallucination.
+        </p>
+
+        <h3 class="subsection-heading">Unified Credibility Score (CS)</h3>
+        <p>
+          The final <strong>Credibility Score (CS)</strong> is defined as the <strong>harmonic mean</strong> of the three sub-metrics. We choose the harmonic mean over the arithmetic mean because it is more sensitive to low values in any single dimension, ensuring that a model must be robust across all axes to achieve a high score.
+        </p>
+
+        <div class="formula-block">
+          \[
+          CS = \frac{3}{\frac{1}{S_{clean}} + \frac{1}{S_{ood}} + \frac{1}{S_{adv}}}
+          \]
+        </div>
+
+        <p>
+          A high Credibility Score (approaching 1.0) indicates a model that is both accurate and robust, while a low score suggests vulnerability to noise or adversarial manipulation, even if standard performance is high.
+        </p>
+      </div>
+    </section>
+
+    <!-- ===================== METHODOLOGY ===================== -->
+    <section id="methodology">
+      <h2 class="section-heading">Methodology</h2>
+      <div class="prose">
+        <p>
+          GPU-CREDScore operates as a three-stage evaluation pipeline, executed
+          entirely on consumer-grade GPUs for accessibility and reproducibility.
+        </p>
+
+        <!-- Methodology Diagram Placeholder -->
+        <figure class="figure" id="fig-pipeline">
+          <img src="assets/methodology_diagram.png" alt="GPU-CREDScore evaluation pipeline diagram showing the three stages: Semantic Fidelity, OOD Robustness, and Adversarial Resilience." />
+          <figcaption><strong>Figure 1.</strong> Overview of the GPU-CREDScore three-stage evaluation pipeline.</figcaption>
+        </figure>
+
+        <p><strong>Stage 1 — Semantic Fidelity Scoring.</strong>
+          Given an input image and its generated caption, we compute a weighted ensemble
+          of reference-based metrics (CIDEr, METEOR, BERTScore) against ground-truth
+          annotations. A learned calibration layer maps raw metric scores to a
+          probability of factual correctness.
+        </p>
+        <p><strong>Stage 2 — OOD Robustness Probing.</strong>
+          We apply a suite of distributional shift transforms (Gaussian noise, contrast
+          jitter, domain style transfer) to the input image and measure caption
+          stability. Models that produce semantically consistent outputs across
+          perturbations receive higher robustness scores.
+        </p>
+        <p><strong>Stage 3 — Adversarial Resilience Testing.</strong>
+          Using PGD and AutoAttack-based perturbations on the visual encoder, we
+          evaluate how adversarial inputs affect caption generation. The resilience score
+          quantifies the model's resistance to targeted hallucination attacks.
+        </p>
+        <p>
+          The final <strong>CREDScore</strong> is a weighted harmonic mean of the three
+          stage scores, producing a value in [0, 1] where higher scores indicate
+          greater credibility.
+        </p>
+      </div>
+    </section>
+
+    <!-- ===================== EXPERIMENTAL RESULTS ===================== -->
+    <section id="results">
+      <h2 class="section-heading">Experimental Results</h2>
+      <div class="prose">
+        <p>
+          We evaluate model performance across the clean, OOD, and adversarial axes using our unified framework. Table&nbsp;1 presents a comparative analysis of the BLIP and InstructBLIP architectures, highlighting the impact of instruction tuning on credibility.
+        </p>
+
+        <table class="results-table" id="table-comparison">
+          <thead>
+            <tr>
+              <th>Model</th>
+              <th>$S_{clean}$</th>
+              <th>$S_{ood}$</th>
+              <th>$S_{adv}$</th>
+              <th>CredScore ↑</th>
+            </tr>
+          </thead>
+          <tbody id="results-table-body">
+            <!-- Dynamic content will be injected here -->
+          </tbody>
+        </table>
+        <p style="font-size:0.85rem;color:var(--color-text-secondary); margin-bottom: 2rem;">
+          <strong>Table 1.</strong> Comparative performance metrics. InstructBLIP shows significantly higher CredScore due to improved instruction following and robustness.
+        </p>
+
+        <h3 class="subsection-heading">Qualitative Analysis</h3>
+        <p>
+          Beyond quantitative scores, we analyze specific failure modes where models exhibit hallucination behavior. The following examples demonstrate how CredScore captures these semantic errors.
+        </p>
+
+        <div class="qualitative-grid">
+          <!-- Example 1 -->
+          <div class="qualitative-item">
+            <div class="qualitative-img">
+              <img src="assets/exp_sample_1.png" alt="Living room with no pets" />
+            </div>
+            <div class="qualitative-content">
+              <h4>Case 1: Object Hallucination</h4>
+              <p>In this empty living room, the base model incorrectly identifies a pet due to background patterns on the rug.</p>
+              <div class="comparison-box">
+                <strong>Ground Truth:</strong> "A modern living room with a white sofa and a coffee table."<br>
+                <strong>BLIP-Base:</strong> "A living room with a white sofa and <u>a small cat on the floor</u>." <span class="hallucination-label">Hallucination</span><br>
+                <strong>InstructBLIP:</strong> "A bright living room featuring a white couch and a wooden table."
+              </div>
+            </div>
+          </div>
+
+          <!-- Example 2 -->
+          <div class="qualitative-item">
+            <div class="qualitative-img">
+              <img src="assets/exp_sample_2.png" alt="Kitchen counter with fruit" />
+            </div>
+            <div class="qualitative-content">
+              <h4>Case 2: Contextual Hallucination</h4>
+              <p>The model fabricates a common kitchen appliance that is not present in the scene, likely influenced by training data priors.</p>
+              <div class="comparison-box">
+                <strong>Ground Truth:</strong> "A kitchen counter with a bowl of green apples and a glass."<br>
+                <strong>BLIP-Base:</strong> "A bowl of apples on a counter <u>next to a toaster</u>." <span class="hallucination-label">Hallucination</span><br>
+                <strong>InstructBLIP:</strong> "A close up of a bowl of green apples on a kitchen countertop."
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <p>
+          These cases illustrate that while standard metrics might still give high overlap scores for partially correct descriptions, the <strong>CredScore</strong> penalizes the inclusion of non-existent objects, providing a more reliable safety signal.
+        </p>
+      </div>
+    </section>
+
+    <!-- ===================== MODEL COMPARISON ===================== -->
+    <section id="comparison">
+      <h2 class="section-heading">Model Comparison</h2>
+      <div class="prose">
+        <p>
+          Our evaluation reveals a clear trade-off between architectural complexity and model reliability. While base models offer higher throughput, instruction-tuned variants demonstrate significantly lower hallucination rates and better grounding.
+        </p>
+
+        <table class="results-table" id="table-comparison-metrics">
+          <thead>
+            <tr>
+              <th>Metric</th>
+              <th>BLIP-Base</th>
+              <th>InstructBLIP-7B</th>
+            </tr>
+          </thead>
+          <tbody id="comparison-table-body">
+            <!-- Dynamic content will be injected here -->
+          </tbody>
+        </table>
+
+        <p style="margin-top: 1.5rem;">
+          The analysis suggests that InstructBLIP's instruction-following capabilities directly correlate with its resilience against OOD and adversarial triggers. However, the increased latency must be considered for real-time safety-critical applications.
+        </p>
+      </div>
+    </section>
+
+    <!-- ===================== CONCLUSION ===================== -->
+    <section id="conclusion">
+      <h2 class="section-heading">Conclusion</h2>
+      <div class="prose">
+        <p>
+          This work introduces a structured framework for quantifying hallucination risk in Vision-Language Models. By moving beyond n-gram overlap and incorporating multi-axis robustness metrics, we provide a more rigorous assessment of VLM credibility. Our results demonstrate that the proposed composite metric identifies failure modes that traditional evaluations overlook, offering a critical safety signal for real-world deployment.
+        </p>
+
+        <h3 class="subsection-heading">Future Work</h3>
+        <ul>
+          <li><strong>Dynamic Calibration:</strong> Scaling the framework to support real-time confidence estimation during model generation.</li>
+          <li><strong>Domain Expansion:</strong> Validating the metric on specialized domains such as medical imaging and satellite remote sensing.</li>
+          <li><strong>Generative Video:</strong> Extending the CredScore axes to account for temporal consistency in video-language modeling.</li>
+        </ul>
+
+        <!-- Final Action Buttons -->
+        <div class="buttons-row" style="margin-top: 3rem; justify-content: flex-start;">
+          <a class="btn" href="#">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M19.5 14.25v-2.625a3.375 3.375 0 0 0-3.375-3.375h-1.5A1.125 1.125 0 0 1 13.5 7.125v-1.5a3.375 3.375 0 0 0-3.375-3.375H8.25m2.25 0H5.625c-.621 0-1.125.504-1.125 1.125v17.25c0 .621.504 1.125 1.125 1.125h12.75c.621 0 1.125-.504 1.125-1.125V11.25a9 9 0 0 0-9-9Z"/></svg>
+            Full Paper
+          </a>
+          <a class="btn" href="#">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M17.25 6.75 22.5 12l-5.25 5.25m-10.5 0L1.5 12l5.25-5.25m7.5-3-4.5 16.5"/></svg>
+            Source Code (GitHub)
+          </a>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- ===================== FOOTER ===================== -->
+  <footer class="site-footer">
+    <div class="container">
+      <p>
+        This website template is inspired by
+        <a href="https://nerfies.github.io" target="_blank" rel="noopener">Nerfies</a>.
+        &copy; 2026 GPU-CREDScore.
+      </p>
+    </div>
+  </footer>
+
+  <script>
+    async function loadData() {
+      try {
+        const response = await fetch('assets/data.json');
+        const data = await response.json();
+
+        // Populate Experimental Results Table
+        const resultsBody = document.getElementById('results-table-body');
+        resultsBody.innerHTML = data.experimental_results.map(row => `
+          <tr class="${row.highlight ? 'highlight-row' : ''}">
+            <td>${row.model}</td>
+            <td>${row.s_clean}</td>
+            <td>${row.s_ood}</td>
+            <td>${row.s_adv}</td>
+            <td>${row.credscore}</td>
+          </tr>
+        `).join('');
+
+        // Populate Model Comparison Table
+        const comparisonBody = document.getElementById('comparison-table-body');
+        comparisonBody.innerHTML = data.model_comparison.map(row => `
+          <tr>
+            <td>${row.metric}</td>
+            <td>${row.blip_base}</td>
+            <td>${row.instructblip}</td>
+          </tr>
+        `).join('');
+
+        // Re-run MathJax to typeset newly added formulas if any
+        if (window.MathJax) {
+          window.MathJax.typesetPromise();
+        }
+      } catch (error) {
+        console.error('Error loading data.json:', error);
+      }
+    }
+
+    document.addEventListener('DOMContentLoaded', loadData);
+  </script>
+</body>
+</html>
