@@ -509,40 +509,63 @@
       <h2 class="section-heading">Methodology</h2>
       <div class="prose">
         <p>
-          GPU-CREDScore operates as a three-stage evaluation pipeline, executed
+          GPU-CREDScore operates as a structured evaluation pipeline, executed
           entirely on consumer-grade GPUs for accessibility and reproducibility.
         </p>
 
-        <!-- Methodology Diagram Placeholder -->
         <figure class="figure" id="fig-pipeline">
-          <img src="assets/methodology_diagram.png"
-            alt="GPU-CREDScore evaluation pipeline diagram showing the three stages: Semantic Fidelity, OOD Robustness, and Adversarial Resilience." />
-          <figcaption><strong>Figure 1.</strong> Overview of the GPU-CREDScore three-stage evaluation pipeline.
-          </figcaption>
+          <img src="methodology_v2_1776959192662.png" alt="GPU-CREDScore methodology pipeline" />
+          <figcaption><strong>Figure 1.</strong> Overview of the GPU-CREDScore six-stage evaluation pipeline.</figcaption>
         </figure>
 
-        <p><strong>Stage 1 — Semantic Fidelity Scoring.</strong>
-          Given an input image and its generated caption, we compute a weighted ensemble
-          of reference-based metrics (CIDEr, METEOR, BERTScore) against ground-truth
-          annotations. A learned calibration layer maps raw metric scores to a
-          probability of factual correctness.
-        </p>
-        <p><strong>Stage 2 — OOD Robustness Probing.</strong>
-          We apply a suite of distributional shift transforms (Gaussian noise, contrast
-          jitter, domain style transfer) to the input image and measure caption
-          stability. Models that produce semantically consistent outputs across
-          perturbations receive higher robustness scores.
-        </p>
-        <p><strong>Stage 3 — Adversarial Resilience Testing.</strong>
-          Using PGD and AutoAttack-based perturbations on the visual encoder, we
-          evaluate how adversarial inputs affect caption generation. The resilience score
-          quantifies the model's resistance to targeted hallucination attacks.
-        </p>
-        <p>
-          The final <strong>CREDScore</strong> is a weighted harmonic mean of the three
-          stage scores, producing a value in [0, 1] where higher scores indicate
-          greater credibility.
-        </p>
+        <ol>
+          <li>
+            <strong>Model Interface Layer:</strong>
+            Provides a unified abstraction for interacting with multiple VLLMs. The system supports models such as:
+            <strong>a) Blip b) ViLT c) Blip-2 d) Phi-3 (MS LLM)</strong>.
+            Each model is loaded through a standardized interface and executed using a common function, enabling consistent evaluation across architectures. This ensures that differences in model implementation do not affect evaluation logic.
+          </li>
+          <li>
+            <strong>Dataset Loader Module:</strong>
+            Responsible for preparing evaluation datasets across different domains:
+            <ul>
+              <li><strong>COCO:</strong> (Representing in-distribution data)</li>
+              <li><strong>Flickr8K:</strong> Natural web images (OOD domain 1)</li>
+              <li><strong>VizWiz:</strong> Real-world degraded images (OOD domain 2)</li>
+              <li><strong>TextCaps:</strong> Text-rich scenes (OOD domain 3)</li>
+            </ul>
+            Each sample contains: Image, Question, Ground truth answer.
+            The Out-of-Distribution score is calculated as:
+            <div class="formula-block">
+              \[ S_{ood} = \frac{S_{flickr} + S_{vizwiz} + S_{textcaps}}{3} \]
+            </div>
+            This ensures domain diversity and prevents dataset bias.
+          </li>
+          <li>
+            <strong>Perturbation Engine:</strong>
+            Introduces controlled disturbances to evaluate model robustness. Three independent adversarial conditions are applied:
+            <strong>1. Prompt injection, 2. Visual Noise attack, 3. Conflict Question attack.</strong>
+          </li>
+          <li>
+            <strong>Evaluation Engine:</strong>
+            Computes a per-sample reliability score based on three components: <strong>Accuracy, Grounding, and Consistency</strong>.
+            <div class="formula-block">
+              \[ Score = Accuracy \times (0.5 \times Grounding + 0.5 \times Consistency) \]
+            </div>
+          </li>
+          <li>
+            <strong>Metric Engine:</strong>
+            The Unified Credibility Score (CS) is computed using the <strong>Harmonic Mean</strong> formula of three variables: $S_{clean}$, $S_{ood}$, and $S_{adv}$.
+            The risk is then derived as:
+            <div class="formula-block">
+              \[ Risk = 1 - CS \]
+            </div>
+          </li>
+          <li>
+            <strong>Reporting Layer:</strong>
+            All calculated values are formatted and presented as tables with graphical representations for a clear and complete understanding of the evaluation results.
+          </li>
+        </ol>
       </div>
     </section>
 
