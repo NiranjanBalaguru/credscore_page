@@ -416,8 +416,8 @@
           images from the dataset pass through the Perturbation Engine, which produces
           clean and adversarially modified variants. These are fed into the VLM Model
           for caption generation. Prediction outputs are forwarded to the Metric
-          Computation stage, which computes S<sub>clean</sub>, S<sub>ood</sub>, and
-          S<sub>adv</sub>. The Credibility Score module aggregates these into a
+          Computation stage, which computes $S_{clean}$, $S_{ood}$, and
+          $S_{adv}$. The Credibility Score module aggregates these into a
           composite CS value, which is finally consumed by the Risk Output &amp;
           Visualization module.
         </p>
@@ -441,8 +441,8 @@
           <li>The <strong>Evaluation Engine</strong> instructs the Dataset Loader to load the target dataset.</li>
           <li>Image–question pairs are dispatched to the <strong>Vision-Language Model</strong>.</li>
           <li>Generated predictions are returned to the <strong>Prediction Collector</strong>.</li>
-          <li>Predictions are forwarded to the <strong>Metric Engine</strong>, which computes S<sub>clean</sub>,
-            S<sub>ood</sub>, and S<sub>adv</sub>.</li>
+          <li>Predictions are forwarded to the <strong>Metric Engine</strong>, which computes $S_{clean}$,
+            $S_{ood}$, and $S_{adv}$.</li>
           <li>Accuracy scores flow to the <strong>Credibility Engine</strong>, which computes the composite CS.</li>
           <li>The <strong>Risk Engine</strong> computes the deployment risk classification.</li>
           <li>Final results and graphs are displayed back to the User via the <strong>Output System</strong>.</li>
