@@ -1,14 +1,17 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Unified Metric for Hallucination Risk Evaluation in Vision-Language Models</title>
-  <meta name="description" content="A unified credibility and risk scoring framework for evaluating hallucination in Vision-Language Models under out-of-distribution and adversarial conditions." />
+  <meta name="description"
+    content="A unified credibility and risk scoring framework for evaluating hallucination in Vision-Language Models under out-of-distribution and adversarial conditions." />
   <link rel="stylesheet" href="style.css" />
   <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
   <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
 </head>
+
 <body>
 
   <!-- ===================== NAVBAR ===================== -->
@@ -18,12 +21,10 @@
       <ul class="navbar__links">
         <li><a href="#abstract">Abstract</a></li>
         <li><a href="#problem">Problem</a></li>
-        <li><a href="#pipeline">Pipeline</a></li>
-        <li><a href="#components">Components</a></li>
+        <li><a href="#methodology">Methodology</a></li>
         <li><a href="#architecture">Architecture</a></li>
         <li><a href="#metric">Metric</a></li>
         <li><a href="#results">Results</a></li>
-        <li><a href="#comparison">Comparison</a></li>
         <li><a href="#conclusion">Conclusion</a></li>
       </ul>
     </div>
@@ -48,28 +49,37 @@
     <!-- ===================== AUTHORS ===================== -->
     <div class="authors" id="authors">
       <ul class="authors__list">
-        <li><a href="#">Author One</a><sup>1</sup></li>
-        <li><a href="#">Author Two</a><sup>1</sup></li>
-        <li><a href="#">Author Three</a><sup>2</sup></li>
-        <li><a href="#">Author Four</a><sup>1,2</sup></li>
+        <li><a href="https://github.com/Niranjan-guru">Niranjan Balaguru</a><sup>1</sup></li>
+        <li><a href="https://github.com/Rohan1865">Rohan</a><sup>1</sup></li>
       </ul>
       <p class="authors__affiliation">
-        <sup>1</sup>&thinsp;University of Example &emsp;
-        <sup>2</sup>&thinsp;Research Lab
+        <sup>1</sup>&thinsp;SRM Institute of Science and Technology &emsp;
       </p>
 
       <!-- Action buttons -->
       <div class="buttons-row">
         <a class="btn" href="#" id="btn-paper">
-          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M19.5 14.25v-2.625a3.375 3.375 0 0 0-3.375-3.375h-1.5A1.125 1.125 0 0 1 13.5 7.125v-1.5a3.375 3.375 0 0 0-3.375-3.375H8.25m2.25 0H5.625c-.621 0-1.125.504-1.125 1.125v17.25c0 .621.504 1.125 1.125 1.125h12.75c.621 0 1.125-.504 1.125-1.125V11.25a9 9 0 0 0-9-9Z"/></svg>
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+            stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round"
+              d="M19.5 14.25v-2.625a3.375 3.375 0 0 0-3.375-3.375h-1.5A1.125 1.125 0 0 1 13.5 7.125v-1.5a3.375 3.375 0 0 0-3.375-3.375H8.25m2.25 0H5.625c-.621 0-1.125.504-1.125 1.125v17.25c0 .621.504 1.125 1.125 1.125h12.75c.621 0 1.125-.504 1.125-1.125V11.25a9 9 0 0 0-9-9Z" />
+          </svg>
           Paper
         </a>
         <a class="btn" href="#" id="btn-code">
-          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M17.25 6.75 22.5 12l-5.25 5.25m-10.5 0L1.5 12l5.25-5.25m7.5-3-4.5 16.5"/></svg>
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+            stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round"
+              d="M17.25 6.75 22.5 12l-5.25 5.25m-10.5 0L1.5 12l5.25-5.25m7.5-3-4.5 16.5" />
+          </svg>
           Code
         </a>
         <a class="btn" href="#" id="btn-dataset">
-          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M20.25 6.375c0 2.278-3.694 4.125-8.25 4.125S3.75 8.653 3.75 6.375m16.5 0c0-2.278-3.694-4.125-8.25-4.125S3.75 4.097 3.75 6.375m16.5 0v11.25c0 2.278-3.694 4.125-8.25 4.125s-8.25-1.847-8.25-4.125V6.375m16.5 0v3.75c0 2.278-3.694 4.125-8.25 4.125s-8.25-1.847-8.25-4.125v-3.75"/></svg>
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+            stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round"
+              d="M20.25 6.375c0 2.278-3.694 4.125-8.25 4.125S3.75 8.653 3.75 6.375m16.5 0c0-2.278-3.694-4.125-8.25-4.125S3.75 4.097 3.75 6.375m16.5 0v11.25c0 2.278-3.694 4.125-8.25 4.125s-8.25-1.847-8.25-4.125V6.375m16.5 0v3.75c0 2.278-3.694 4.125-8.25 4.125s-8.25-1.847-8.25-4.125v-3.75" />
+          </svg>
           Dataset
         </a>
       </div>
@@ -355,7 +365,8 @@
           </p>
           <ul>
             <li>Risk tiers: <strong>Low</strong> (CREDScore ≥ 0.75),
-              <strong>Medium</strong> (0.50–0.74), <strong>High</strong> (&lt; 0.50).</li>
+              <strong>Medium</strong> (0.50–0.74), <strong>High</strong> (&lt; 0.50).
+            </li>
             <li>Generates per-sample risk reports with contributing factor breakdown.</li>
             <li>Provides model-level summary statistics for comparative benchmarking.</li>
           </ul>
@@ -391,8 +402,10 @@
         </p>
       </div>
       <figure class="figure figure--arch" id="fig-arch-highlevel">
-        <img src="assets/arch_page2_img1.png" alt="High-level architecture diagram showing the two processing chains: data ingestion and model inference on the left, scoring and risk assessment on the right." />
-        <figcaption><strong>Figure 2.</strong> High-level architecture diagram — core component topology and data dependencies.</figcaption>
+        <img src="assets/arch_page2_img1.png"
+          alt="High-level architecture diagram showing the two processing chains: data ingestion and model inference on the left, scoring and risk assessment on the right." />
+        <figcaption><strong>Figure 2.</strong> High-level architecture diagram — core component topology and data
+          dependencies.</figcaption>
       </figure>
 
       <!-- 3.2 Data Flow Diagram -->
@@ -410,8 +423,10 @@
         </p>
       </div>
       <figure class="figure figure--arch" id="fig-arch-dataflow">
-        <img src="assets/arch_page2_img2.png" alt="Data flow diagram showing the sequential processing from Image Dataset through Perturbation Engine, VLM Model, Prediction Output, Metric Computation, Credibility Score, to Risk Output and Visualization." />
-        <figcaption><strong>Figure 3.</strong> Data Flow Diagram (Level 0) — end-to-end data transformation pipeline.</figcaption>
+        <img src="assets/arch_page2_img2.png"
+          alt="Data flow diagram showing the sequential processing from Image Dataset through Perturbation Engine, VLM Model, Prediction Output, Metric Computation, Credibility Score, to Risk Output and Visualization." />
+        <figcaption><strong>Figure 3.</strong> Data Flow Diagram (Level 0) — end-to-end data transformation pipeline.
+        </figcaption>
       </figure>
 
       <!-- 3.3 Sequence Diagram -->
@@ -426,15 +441,18 @@
           <li>The <strong>Evaluation Engine</strong> instructs the Dataset Loader to load the target dataset.</li>
           <li>Image–question pairs are dispatched to the <strong>Vision-Language Model</strong>.</li>
           <li>Generated predictions are returned to the <strong>Prediction Collector</strong>.</li>
-          <li>Predictions are forwarded to the <strong>Metric Engine</strong>, which computes S<sub>clean</sub>, S<sub>ood</sub>, and S<sub>adv</sub>.</li>
+          <li>Predictions are forwarded to the <strong>Metric Engine</strong>, which computes S<sub>clean</sub>,
+            S<sub>ood</sub>, and S<sub>adv</sub>.</li>
           <li>Accuracy scores flow to the <strong>Credibility Engine</strong>, which computes the composite CS.</li>
           <li>The <strong>Risk Engine</strong> computes the deployment risk classification.</li>
           <li>Final results and graphs are displayed back to the User via the <strong>Output System</strong>.</li>
         </ol>
       </div>
       <figure class="figure figure--arch-light" id="fig-arch-sequence">
-        <img src="assets/arch_page2_img3.png" alt="UML sequence diagram showing the temporal execution flow across User, Evaluation Engine, Dataset Loader, Vision-Language Model, Prediction Collector, Metric Engine, Credibility Engine, Risk Engine, and Output System." />
-        <figcaption><strong>Figure 4.</strong> Execution sequence diagram — inter-component message flow during evaluation.</figcaption>
+        <img src="assets/arch_page2_img3.png"
+          alt="UML sequence diagram showing the temporal execution flow across User, Evaluation Engine, Dataset Loader, Vision-Language Model, Prediction Collector, Metric Engine, Credibility Engine, Risk Engine, and Output System." />
+        <figcaption><strong>Figure 4.</strong> Execution sequence diagram — inter-component message flow during
+          evaluation.</figcaption>
       </figure>
     </section>
 
@@ -443,27 +461,34 @@
       <h2 class="section-heading">CredScore Metric</h2>
       <div class="prose">
         <p>
-          The CredScore framework quantifies model reliability by aggregating performance across three fundamental axes. Each axis represents a specific operational condition that a robust Vision-Language Model must satisfy.
+          The CredScore framework quantifies model reliability by aggregating performance across three fundamental axes.
+          Each axis represents a specific operational condition that a robust Vision-Language Model must satisfy.
         </p>
 
         <h3 class="subsection-heading">1. Clean Semantic Fidelity ($S_{clean}$)</h3>
         <p>
-          Measures the model's accuracy on high-quality, in-distribution data. It is computed as a weighted ensemble of reference-based metrics (CIDEr, METEOR, BERTScore) compared against ground-truth annotations.
+          Measures the model's accuracy on high-quality, in-distribution data. It is computed as a weighted ensemble of
+          reference-based metrics (CIDEr, METEOR, BERTScore) compared against ground-truth annotations.
         </p>
 
         <h3 class="subsection-heading">2. OOD Robustness ($S_{ood}$)</h3>
         <p>
-          Evaluates the stability of model outputs under distributional shifts. We apply natural perturbations (noise, blur, contrast changes) and measure the semantic consistency of the generated captions relative to the clean baseline.
+          Evaluates the stability of model outputs under distributional shifts. We apply natural perturbations (noise,
+          blur, contrast changes) and measure the semantic consistency of the generated captions relative to the clean
+          baseline.
         </p>
 
         <h3 class="subsection-heading">3. Adversarial Resilience ($S_{adv}$)</h3>
         <p>
-          Quantifies the model's resistance to targeted adversarial attacks. It measures the performance retention when the visual encoder is subjected to imperceptible perturbations designed to induce hallucination.
+          Quantifies the model's resistance to targeted adversarial attacks. It measures the performance retention when
+          the visual encoder is subjected to imperceptible perturbations designed to induce hallucination.
         </p>
 
         <h3 class="subsection-heading">Unified Credibility Score (CS)</h3>
         <p>
-          The final <strong>Credibility Score (CS)</strong> is defined as the <strong>harmonic mean</strong> of the three sub-metrics. We choose the harmonic mean over the arithmetic mean because it is more sensitive to low values in any single dimension, ensuring that a model must be robust across all axes to achieve a high score.
+          The final <strong>Credibility Score (CS)</strong> is defined as the <strong>harmonic mean</strong> of the
+          three sub-metrics. We choose the harmonic mean over the arithmetic mean because it is more sensitive to low
+          values in any single dimension, ensuring that a model must be robust across all axes to achieve a high score.
         </p>
 
         <div class="formula-block">
@@ -473,7 +498,8 @@
         </div>
 
         <p>
-          A high Credibility Score (approaching 1.0) indicates a model that is both accurate and robust, while a low score suggests vulnerability to noise or adversarial manipulation, even if standard performance is high.
+          A high Credibility Score (approaching 1.0) indicates a model that is both accurate and robust, while a low
+          score suggests vulnerability to noise or adversarial manipulation, even if standard performance is high.
         </p>
       </div>
     </section>
@@ -489,8 +515,10 @@
 
         <!-- Methodology Diagram Placeholder -->
         <figure class="figure" id="fig-pipeline">
-          <img src="assets/methodology_diagram.png" alt="GPU-CREDScore evaluation pipeline diagram showing the three stages: Semantic Fidelity, OOD Robustness, and Adversarial Resilience." />
-          <figcaption><strong>Figure 1.</strong> Overview of the GPU-CREDScore three-stage evaluation pipeline.</figcaption>
+          <img src="assets/methodology_diagram.png"
+            alt="GPU-CREDScore evaluation pipeline diagram showing the three stages: Semantic Fidelity, OOD Robustness, and Adversarial Resilience." />
+          <figcaption><strong>Figure 1.</strong> Overview of the GPU-CREDScore three-stage evaluation pipeline.
+          </figcaption>
         </figure>
 
         <p><strong>Stage 1 — Semantic Fidelity Scoring.</strong>
@@ -521,98 +549,14 @@
     <!-- ===================== EXPERIMENTAL RESULTS ===================== -->
     <section id="results">
       <h2 class="section-heading">Experimental Results</h2>
-      <div class="prose">
+      <div class="prose" style="margin-bottom: 2rem;">
         <p>
-          We evaluate model performance across the clean, OOD, and adversarial axes using our unified framework. Table&nbsp;1 presents a comparative analysis of the BLIP and InstructBLIP architectures, highlighting the impact of instruction tuning on credibility.
-        </p>
-
-        <table class="results-table" id="table-comparison">
-          <thead>
-            <tr>
-              <th>Model</th>
-              <th>$S_{clean}$</th>
-              <th>$S_{ood}$</th>
-              <th>$S_{adv}$</th>
-              <th>CredScore ↑</th>
-            </tr>
-          </thead>
-          <tbody id="results-table-body">
-            <!-- Dynamic content will be injected here -->
-          </tbody>
-        </table>
-        <p style="font-size:0.85rem;color:var(--color-text-secondary); margin-bottom: 2rem;">
-          <strong>Table 1.</strong> Comparative performance metrics. InstructBLIP shows significantly higher CredScore due to improved instruction following and robustness.
-        </p>
-
-        <h3 class="subsection-heading">Qualitative Analysis</h3>
-        <p>
-          Beyond quantitative scores, we analyze specific failure modes where models exhibit hallucination behavior. The following examples demonstrate how CredScore captures these semantic errors.
-        </p>
-
-        <div class="qualitative-grid">
-          <!-- Example 1 -->
-          <div class="qualitative-item">
-            <div class="qualitative-img">
-              <img src="assets/exp_sample_1.png" alt="Living room with no pets" />
-            </div>
-            <div class="qualitative-content">
-              <h4>Case 1: Object Hallucination</h4>
-              <p>In this empty living room, the base model incorrectly identifies a pet due to background patterns on the rug.</p>
-              <div class="comparison-box">
-                <strong>Ground Truth:</strong> "A modern living room with a white sofa and a coffee table."<br>
-                <strong>BLIP-Base:</strong> "A living room with a white sofa and <u>a small cat on the floor</u>." <span class="hallucination-label">Hallucination</span><br>
-                <strong>InstructBLIP:</strong> "A bright living room featuring a white couch and a wooden table."
-              </div>
-            </div>
-          </div>
-
-          <!-- Example 2 -->
-          <div class="qualitative-item">
-            <div class="qualitative-img">
-              <img src="assets/exp_sample_2.png" alt="Kitchen counter with fruit" />
-            </div>
-            <div class="qualitative-content">
-              <h4>Case 2: Contextual Hallucination</h4>
-              <p>The model fabricates a common kitchen appliance that is not present in the scene, likely influenced by training data priors.</p>
-              <div class="comparison-box">
-                <strong>Ground Truth:</strong> "A kitchen counter with a bowl of green apples and a glass."<br>
-                <strong>BLIP-Base:</strong> "A bowl of apples on a counter <u>next to a toaster</u>." <span class="hallucination-label">Hallucination</span><br>
-                <strong>InstructBLIP:</strong> "A close up of a bowl of green apples on a kitchen countertop."
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <p>
-          These cases illustrate that while standard metrics might still give high overlap scores for partially correct descriptions, the <strong>CredScore</strong> penalizes the inclusion of non-existent objects, providing a more reliable safety signal.
+          We evaluate the performance of <strong>ViLT, Blip-2, and Blip</strong> across multiple levels of evaluation axes. The results below show the progression of $S_{clean}$, $S_{ood}$, $S_{adv}$, CS, and Risk metrics.
         </p>
       </div>
-    </section>
 
-    <!-- ===================== MODEL COMPARISON ===================== -->
-    <section id="comparison">
-      <h2 class="section-heading">Model Comparison</h2>
-      <div class="prose">
-        <p>
-          Our evaluation reveals a clear trade-off between architectural complexity and model reliability. While base models offer higher throughput, instruction-tuned variants demonstrate significantly lower hallucination rates and better grounding.
-        </p>
-
-        <table class="results-table" id="table-comparison-metrics">
-          <thead>
-            <tr>
-              <th>Metric</th>
-              <th>BLIP-Base</th>
-              <th>InstructBLIP-7B</th>
-            </tr>
-          </thead>
-          <tbody id="comparison-table-body">
-            <!-- Dynamic content will be injected here -->
-          </tbody>
-        </table>
-
-        <p style="margin-top: 1.5rem;">
-          The analysis suggests that InstructBLIP's instruction-following capabilities directly correlate with its resilience against OOD and adversarial triggers. However, the increased latency must be considered for real-time safety-critical applications.
-        </p>
+      <div id="results-dynamic-container">
+        <!-- Tables and Graphs will be injected here by script -->
       </div>
     </section>
 
@@ -621,24 +565,38 @@
       <h2 class="section-heading">Conclusion</h2>
       <div class="prose">
         <p>
-          This work introduces a structured framework for quantifying hallucination risk in Vision-Language Models. By moving beyond n-gram overlap and incorporating multi-axis robustness metrics, we provide a more rigorous assessment of VLM credibility. Our results demonstrate that the proposed composite metric identifies failure modes that traditional evaluations overlook, offering a critical safety signal for real-world deployment.
+          This work introduces a structured framework for quantifying hallucination risk in Vision-Language Models. By
+          moving beyond n-gram overlap and incorporating multi-axis robustness metrics, we provide a more rigorous
+          assessment of VLM credibility. Our results demonstrate that the proposed composite metric identifies failure
+          modes that traditional evaluations overlook, offering a critical safety signal for real-world deployment.
         </p>
 
         <h3 class="subsection-heading">Future Work</h3>
         <ul>
-          <li><strong>Dynamic Calibration:</strong> Scaling the framework to support real-time confidence estimation during model generation.</li>
-          <li><strong>Domain Expansion:</strong> Validating the metric on specialized domains such as medical imaging and satellite remote sensing.</li>
-          <li><strong>Generative Video:</strong> Extending the CredScore axes to account for temporal consistency in video-language modeling.</li>
+          <li><strong>Dynamic Calibration:</strong> Scaling the framework to support real-time confidence estimation
+            during model generation.</li>
+          <li><strong>Domain Expansion:</strong> Validating the metric on specialized domains such as medical imaging
+            and satellite remote sensing.</li>
+          <li><strong>Generative Video:</strong> Extending the CredScore axes to account for temporal consistency in
+            video-language modeling.</li>
         </ul>
 
         <!-- Final Action Buttons -->
         <div class="buttons-row" style="margin-top: 3rem; justify-content: flex-start;">
           <a class="btn" href="#">
-            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M19.5 14.25v-2.625a3.375 3.375 0 0 0-3.375-3.375h-1.5A1.125 1.125 0 0 1 13.5 7.125v-1.5a3.375 3.375 0 0 0-3.375-3.375H8.25m2.25 0H5.625c-.621 0-1.125.504-1.125 1.125v17.25c0 .621.504 1.125 1.125 1.125h12.75c.621 0 1.125-.504 1.125-1.125V11.25a9 9 0 0 0-9-9Z"/></svg>
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+              stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round"
+                d="M19.5 14.25v-2.625a3.375 3.375 0 0 0-3.375-3.375h-1.5A1.125 1.125 0 0 1 13.5 7.125v-1.5a3.375 3.375 0 0 0-3.375-3.375H8.25m2.25 0H5.625c-.621 0-1.125.504-1.125 1.125v17.25c0 .621.504 1.125 1.125 1.125h12.75c.621 0 1.125-.504 1.125-1.125V11.25a9 9 0 0 0-9-9Z" />
+            </svg>
             Full Paper
           </a>
           <a class="btn" href="#">
-            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M17.25 6.75 22.5 12l-5.25 5.25m-10.5 0L1.5 12l5.25-5.25m7.5-3-4.5 16.5"/></svg>
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+              stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round"
+                d="M17.25 6.75 22.5 12l-5.25 5.25m-10.5 0L1.5 12l5.25-5.25m7.5-3-4.5 16.5" />
+            </svg>
             Source Code (GitHub)
           </a>
         </div>
@@ -698,4 +656,5 @@
     document.addEventListener('DOMContentLoaded', loadData);
   </script>
 </body>
+
 </html>

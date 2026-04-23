@@ -1,50 +1,30 @@
 {
-  "experimental_results": [
+  "models": [
     {
-      "model": "BLIP-Base",
-      "s_clean": 0.72,
-      "s_ood": 0.58,
-      "s_adv": 0.45,
-      "credscore": 0.56,
-      "highlight": false
+      "name": "ViLT",
+      "results": [
+        {"level": 1, "s_clean": 0.6442, "s_ood": 0.1707, "s_adv": 0.6550, "cs": 0.3357, "risk": 0.6643},
+        {"level": 2, "s_clean": 0.6442, "s_ood": 0.1707, "s_adv": 0.6517, "cs": 0.3354, "risk": 0.6646},
+        {"level": 3, "s_clean": 0.6442, "s_ood": 0.1707, "s_adv": 0.6528, "cs": 0.3355, "risk": 0.6645},
+        {"level": 4, "s_clean": 0.6442, "s_ood": 0.1707, "s_adv": 0.6550, "cs": 0.3357, "risk": 0.6643},
+        {"level": 5, "s_clean": 0.6442, "s_ood": 0.1707, "s_adv": 0.6489, "cs": 0.3351, "risk": 0.6648}
+      ]
     },
     {
-      "model": "InstructBLIP-7B",
-      "s_clean": 0.81,
-      "s_ood": 0.74,
-      "s_adv": 0.62,
-      "credscore": 0.71,
-      "highlight": true
+      "name": "Blip 2",
+      "results": [
+        {"level": 1, "s_clean": 0.1641, "s_ood": 0.1329, "s_adv": 0.1690, "cs": 0.1536, "risk": 0.8464},
+        {"level": 2, "s_clean": 0.1641, "s_ood": 0.1329, "s_adv": 0.1692, "cs": 0.1536, "risk": 0.8464},
+        {"level": 3, "s_clean": 0.1641, "s_ood": 0.1329, "s_adv": 0.1691, "cs": 0.1536, "risk": 0.8464}
+      ]
     },
     {
-      "model": "mPLUG-Owl2",
-      "s_clean": 0.85,
-      "s_ood": 0.78,
-      "s_adv": 0.72,
-      "credscore": 0.78,
-      "highlight": false
-    }
-  ],
-  "model_comparison": [
-    {
-      "metric": "Clean Accuracy",
-      "blip_base": "Moderate",
-      "instructblip": "<strong>High</strong>"
-    },
-    {
-      "metric": "Hallucination Tendency",
-      "blip_base": "High",
-      "instructblip": "<strong>Low</strong>"
-    },
-    {
-      "metric": "Inference Speed",
-      "blip_base": "<strong>18.2 ms / img</strong>",
-      "instructblip": "42.5 ms / img"
-    },
-    {
-      "metric": "Credibility Axis Balance",
-      "blip_base": "Skewed",
-      "instructblip": "<strong>Balanced</strong>"
+      "name": "Blip",
+      "results": [
+        {"level": 1, "s_clean": 0.1641, "s_ood": 0.1329, "s_adv": 0.1690, "cs": 0.1536, "risk": 0.8464},
+        {"level": 2, "s_clean": 0.1641, "s_ood": 0.1329, "s_adv": 0.1692, "cs": 0.1536, "risk": 0.8464},
+        {"level": 3, "s_clean": 0.1641, "s_ood": 0.1329, "s_adv": 0.1691, "cs": 0.1536, "risk": 0.8464}
+      ]
     }
   ]
 }
